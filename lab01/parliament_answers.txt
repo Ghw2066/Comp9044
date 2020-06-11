@@ -35,7 +35,7 @@ Q4 answer: egrep '^.+y:.+y,.+$' parliament.txt
 5) Write an egrep command that will print all the lines in the file where the MP's name or the electorate
 ends in the letter 'y'.
 
-Q5 answer: egrep '^.+(y:|y,|\sAM|\sOAM).+$' parliament.txt
+Q5 answer: egrep '^.+(y:|y,|y\sAM|y\sOAM).+$' parliament.txt
 
 
 6) Write an egrep command to print all the lines in the file where there is any word in the
