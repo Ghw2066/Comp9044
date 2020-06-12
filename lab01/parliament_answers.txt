@@ -47,7 +47,7 @@ Q6 answer: egrep 'ng(\s|:|,|\sOAM|\sAM)' parliament.txt
 7) Write an egrep command that will print all the lines in the file where the MP's
 surname (last name) both begins and ends with a vowel.
 
-Q7 answer:
+Q7 answer: egrep "\s[AEIOU]'?[a-zA-Z]*[aeiou](:|\sOAM|\sAM)" parliament.txt
 
 
 8) Most electorate have names that are a single word, e.g. Warringah, Lyons & Grayndler.
@@ -55,14 +55,14 @@ A few electorates have multiple word names, for example, Kingsford Smith.
 Write an egrep command that will print all the lines in the file where the electorate name contains
 multiple words (separated by spaces or hyphens).
 
-Q8 answer:
+Q8 answer: egrep "Member\sfor\s[A-Z][a-z]*(-|\s)[A-Z][a-z]*,\s" parliament.txt 
 
 
 9) Write a shell pipeline which prints the 8 Australians states & territory in order of the number of MPs they have.
 It should print only the number of MPs, followed by the name of the states/territories.
 It should print them from fewest to most MPs.
 
-Q9 answer:
+Q9 answer: 
 
 
 10) Challenge: The most common first name for an MP is Andrew.
