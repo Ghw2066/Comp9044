@@ -62,7 +62,7 @@ Q8 answer: egrep "Member\sfor\s[A-Z][a-z]*(-|\s)[A-Z][a-z]*,\s" parliament.txt
 It should print only the number of MPs, followed by the name of the states/territories.
 It should print them from fewest to most MPs.
 
-Q9 answer: 
+Q9 answer: cut -d: -f2 parliament.txt | cut -d, -f2|sort|uniq -c|sort
 
 
 10) Challenge: The most common first name for an MP is Andrew.
