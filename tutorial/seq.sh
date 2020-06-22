@@ -26,7 +26,7 @@ EOI
 	exit 1
 fi
 
-if  (( incremnnt < 1 ))
+if  (( increment < 1 ))
 then
 	echo "$0: invalid increment value: $increment"
 	exit 1
