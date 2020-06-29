@@ -1,12 +1,19 @@
 #!/usr/bin/perl -w
 
 
-$line = <STDIN>;
+while ( $line = <STDIN>) {
 
-$line =~ s/[0-4]/</g;
-$line =~ s/[6-9]/>/g;
-print "$line";
 
+	$line =~ s/[0-4]/</g;
+	$line =~ s/[6-9]/>/g;
+
+	if($line !~ /./){
+		last;
+	}
+
+	print "$line";
+
+}
 #@string = split('',$line);
 
 
