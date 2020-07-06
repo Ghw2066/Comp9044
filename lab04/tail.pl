@@ -10,15 +10,23 @@ foreach $arg (@ARGV) {
     } elsif ($arg =~ /-\d/){
 	    $arg =~ tr/-//d;
 	    $N = $arg;
-	    print "$N\n";
+	    #print "$N\n";
 	    #	    exit 0;
     } else {
         push @files, $arg;
     }
 }
-
-while(defined(my $line=<>)){
-    print $line;
+$n_arg=@ARGV;
+#$line_cnt=0;
+$j=0;
+#while(!$n_arg && defined(my $line=<>)){
+#	$line_cnt=$line_cnt+1;
+#}
+while(!$n_arg && defined(my $line=<>)){
+	if($j>1){    
+		print $line;
+	}
+	$j=$j+1;
 }
 
 foreach $file (@files) {
