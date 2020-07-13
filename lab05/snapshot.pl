@@ -32,7 +32,7 @@ sub load{
     #print "$resdir\n";
     my @resfiles = glob( "$resdir/*" );
     foreach $f (@resfiles){
-        copy($f, "../");
+        copy($f, "./");
         #print $f . " yes\n";
     }
     print "Restoring snapshot $resnum\n";
