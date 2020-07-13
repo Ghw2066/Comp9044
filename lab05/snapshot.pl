@@ -1,17 +1,17 @@
 #!/usr/bin/perl -w
 use File::Copy;
 
-sub save(){
+sub save{
     $num=0;
     while ( -e ".snapshot.$num" ) 
     {
-        print ".snapshot.$num ";
+        #print ".snapshot.$num ";
         
         $num=$num+1;  
 
-        print "$num \n";
+        #print "$num \n";
     }
-    mkdir( ".snapshot.$num" ) and print "Creating .snapshot.$num\n";
+    mkdir( ".snapshot.$num" ) and print "Creating snapshot $num\n";
 
     $dir = "./*";
     my @files = glob( $dir );
@@ -21,24 +21,29 @@ sub save(){
             $dis=".snapshot.$num";
             copy($f, $dis);
             #`cp "$f" "./.snapshot.$num"`;
-            print $f . " yes\n";
+            #print $f . " yes\n";
         }
     }
 }
 
-sub load($resnum){
-    $resdir=".snapshot.$resnum";
-    my @resfiles = glob( $resdir );
+sub load{
+    $resnum = $_[0];
+    $resdir="./.snapshot.$resnum";
+    #print "$resdir\n";
+    my @resfiles = glob( "$resdir/*" );
     foreach $f (@resfiles){
-        copy($f, "../")
+        copy($f, "../");
+        #print $f . " yes\n";
     }
+    print "Restoring snapshot $resnum\n";
 }
 
 if ($ARGV[0] eq "save"){
     save();
 }
 
-if ($ARGV[0] eq "load" and $ARGV[1]){ 
+if ($ARGV[0] eq "load"){ 
+    save();
     load($ARGV[1]);
 }
 
