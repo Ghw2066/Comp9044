@@ -1,0 +1,11 @@
+#!/bin/dash
+
+for file in $@
+do 
+    # if test -e "./.shrug/index/$file"
+    # then
+
+    # else
+        cp "$file" ".shrug/index/"
+    #fi
+done
