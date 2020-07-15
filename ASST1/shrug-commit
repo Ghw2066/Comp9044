@@ -1,5 +1,6 @@
-#!/bin/dash
+#!/bin/bash
 
+#get the num of commit times
 if test -e "./.shrug/log"
 then
     num=`wc -l .shrug/log | cut -d" " -f1`
@@ -8,22 +9,26 @@ else
     touch "./.shrug/log"
 fi
 
-if test -d ".shrug/objects"
-then
-    continue
-else
-    mkdir ".shrug/objects"
-fi
+message(){
+    mkdir ".shrug/objects/$num"
+    cp .shrug/index/* ".shrug/objects/$num"
+    echo "$1" >> ./.shrug/log
+    echo "Committed as commit $num"
+}
+
 
 if test $1 = "-m"
 then
-    if test -d ".shrug/objects/$num"
-    then
-        continue
-    else
-        mkdir ".shrug/objects/$num"
-    fi
-    cp .shrug/index/* ".shrug/objects/$num"
-    echo $2 >> ./.shrug/log
-    echo "Committed as commit $num"
+    message $2
+
+elif test $1 = "-a" && test $2 = "-m"
+then
+    #echo $3
+    for file in `ls .shrug/index/`
+    do
+        ./shrug-add $file
+    done
+
+    message "$3"
+
 fi

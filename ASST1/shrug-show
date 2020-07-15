@@ -1,2 +1,11 @@
-#!/bin/dash
+#!/bin/bash
 
+commit=`echo $1 | cut -d":" -f1`
+file=`echo $1 | cut -d":" -f2`
+
+if [[ $commit =~ [0-9]+ ]]
+then
+    cat ".shrug/objects/$commit/$file"
+else
+    cat ".shrug/index/$file"
+fi

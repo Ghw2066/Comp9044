@@ -1,4 +1,4 @@
-#!/bin/dash
+#!/bin/bash
 
 if test -e ".shrug"
 then
@@ -7,5 +7,6 @@ else
     mkdir ".shrug"
     cd .shrug
     mkdir "index"
+    mkdir ".shrug/objects"
     echo "Initialized empty shrug repository in .shrug"
 fi
