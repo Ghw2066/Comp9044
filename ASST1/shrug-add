@@ -1,11 +1,20 @@
 #!/bin/bash
 
-for file in $@
-do 
-    # if test -e "./.shrug/index/$file"
-    # then
+if test -e ".shrug"
+then
 
-    # else
-        cp "$file" ".shrug/index/"
-    #fi
-done
+    for file in $@
+    do 
+        if test -e $file
+        then
+            cp "$file" ".shrug/index/"
+        else
+            echo "shrug-add: error: can not open $file"
+        fi
+    done
+
+else
+    echo "shrug-add: error: no .shrug directory containing shrug repository exists"
+fi
+
+
