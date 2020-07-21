@@ -1,0 +1,5 @@
+Date	Start	Stop	Activity	Comments
+13/07/20	22:00	23:30	coding	implemented basic init functionality
+14/07/20	22:00	24:00	coding	implemented subset 0
+15/07/20    20:00   24:00   coding  implemented subset 0 and part of subset1
+16/07/20    00:00   04:00   debuging    fix bugs and completeing tests

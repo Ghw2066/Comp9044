@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/dash
 
 if test -e ".shrug"
 then
@@ -9,8 +9,14 @@ then
         then
             cp "$file" ".shrug/index/"
         else
-            echo "shrug-add: error: can not open $file"
+            if test -e ".shrug/index/$file"
+            then
+                rm -f ".shrug/index/$file"
+            else
+                echo "shrug-add: error: can not open '$file'"
+            fi
         fi
+
     done
 
 else

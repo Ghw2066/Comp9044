@@ -1,11 +1,28 @@
-#!/bin/bash
+#!/bin/dash
 
 commit=`echo $1 | cut -d":" -f1`
 file=`echo $1 | cut -d":" -f2`
 
-if [[ $commit =~ [0-9]+ ]]
+if test -z $commit 
 then
-    cat ".shrug/objects/$commit/$file"
+
+    if test -e ".shrug/index/$file"
+    then
+        cat ".shrug/index/$file"  
+    else
+        echo "shrug-show: error: '$file' not found in index"
+    fi
 else
-    cat ".shrug/index/$file"
+
+    if test -d ".shrug/objects/$commit"
+    then
+        if test -e ".shrug/objects/$commit/$file"
+        then
+            cat ".shrug/objects/$commit/$file"
+        else
+            echo "shrug-show: error: '$file' not found in commit $commit"
+        fi   
+    else
+        echo "shrug-show: error: unknown commit '$commit'" 
+    fi
 fi

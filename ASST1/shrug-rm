@@ -1,0 +1,24 @@
+#!/bin/dash
+
+if test $1 = "--cached"
+then
+    for file in $@
+    do
+        if test -e ".shrug/index/$file"
+        then
+            rm -f ".shrug/index/$file"
+        fi
+    done
+    exit 0
+fi
+
+for file in $@
+do
+    if test -e ".shrug/index/$file"
+    then
+        rm ".shrug/index/$file"
+    else
+        echo "shrug-rm: error: '$file' is not in the shrug repository"
+    fi
+
+done

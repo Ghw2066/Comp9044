@@ -1,3 +1,0 @@
-Date	Start	Stop	Activity	Comments
-13/07/19	22:00	23:30	coding	implemented basic init functionality
-14/07/19	22:00	24:00	coding	implemented subset 0

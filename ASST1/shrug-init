@@ -1,12 +1,12 @@
-#!/bin/bash
+#!/bin/dash
 
-if test -e ".shrug"
+if test -d ".shrug"
 then
     echo "shrug-init: error: .shrug already exists"
 else
     mkdir ".shrug"
     cd .shrug
     mkdir "index"
-    mkdir ".shrug/objects"
+    mkdir "objects"
     echo "Initialized empty shrug repository in .shrug"
 fi

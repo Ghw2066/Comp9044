@@ -1,13 +1,13 @@
 #!/usr/bin/perl -w
 
-open(DATA, "<$ARGV[0]");
+open(DATA, "<$ARGV[0]") or die "";
 @lines = <DATA>;
 #print @lines;    
 close(DATA);
 if(@lines%2==0){
-    $n=@lines/2;
-    printf "$lines[$n-1]";
-    printf "$lines[$n]";
+    #$n=@lines/2;
+    printf "$lines[@lines/2-1]";
+    printf "$lines[@lines]";
 }
 else{
     printf "$lines[(@lines-1)/2]";
