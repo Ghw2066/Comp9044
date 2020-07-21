@@ -2,11 +2,11 @@
 
 $n=0;
 while(defined($line = <STDIN>)){
-    @words = split(/[a-zA-Z]+/, $line);
+    @words = split(/[^a-zA-Z]+/, $line);
     foreach $_ (@words) {
         #if ($number ne '') {
             #$total += $number;
-        
+        printf "$_\n";
         $n++;
         #}
         # unless($word =~ /[a-zA-Z]+/){
@@ -14,7 +14,7 @@ while(defined($line = <STDIN>)){
         # }
 
     }
-    $m++;
+    #$m++;
     #printf "\n";
 }
 
@@ -31,5 +31,5 @@ while(defined($line = <STDIN>)){
 #         $n++;
 #     #}
 # }
-$n=$n-$m;
+#$n=$n-$m-$m;
 printf "$n words\n";
