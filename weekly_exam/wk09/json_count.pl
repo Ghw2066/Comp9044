@@ -10,8 +10,7 @@ foreach $line (@lines){
     chomp $line;
     if($line =~ /"how_many":\s[0-9]*,/){
         #print substr($line,20,-2),"\n";
-        $temp=substr($line,20,-2);
-        $num=$temp;
+        $num=substr($line,20,-2);
         #print "$num\n";
     }
     if($line =~ /"species":\s".*"/){
