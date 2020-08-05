@@ -9,8 +9,8 @@ $dist{$target}=0;
 foreach $line (@lines){
     chomp $line;
     if($line =~ /"how_many":\s[0-9]*,/){
-        print "$line\n";
-        print substr($line,20,-1),"\n";
+        #print "$line\n";
+        #print substr($line,20,-1),"\n";
         $num=0+substr($line,20,-1);
         #print "$num\n";
     }
