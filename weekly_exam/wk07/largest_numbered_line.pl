@@ -1,35 +1,29 @@
 #!/usr/bin/perl -w
 
-
-
-#@maxnumlines;
-
-# $userinput =  <STDIN>;
-# chomp ($userinput);
-# print "User typed $userinput\n";
-# while ($line = <>) {
-#     if ($line =~ /^\D*(-?\d+(\.\d+)?)/) {
-#         print "$1\n";
-#     }
-# }
 while ($line = <>) {
     #last unless /\S/;
-    print "$line";
+    #print "$line";
     push @lines, $line;
     
 }
 #print @lines;
-
 foreach $line (@lines){
     @words=split(/\s+/,$line);
     $max=0;
+    $num_exist=0;
     foreach $word (@words){
         if($word =~ /-?\d+(\.\d+)?/ and $&>$max){
             $max = $&;
+            $num_exist=1;
             # print "$&";
         }
     }  
-    push @nums, $max;
+    
+        #print "$max";
+    push @nums,$max;
+    push @nums_exist, $num_exist;
+    
+    
 }
 $max=0;
 foreach $num (@nums){
@@ -39,8 +33,8 @@ foreach $num (@nums){
 }
 
 for ($i=0; $i<@lines; $i=$i+1){
-    if($max==$nums[$i]){
-        print "$lines[$i]\n";
+    if($max == $nums[$i] and $nums_exist[$i]==1){
+        print "$lines[$i]";
     }
 }
 #print "@nums\n";
