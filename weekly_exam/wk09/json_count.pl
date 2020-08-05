@@ -9,13 +9,14 @@ $dist{$target}=0;
 foreach $line (@lines){
     chomp $line;
     if($line =~ /"how_many":\s[0-9]*,/){
-        #print substr($line,20,-2),"\n";
-        $num=substr($line,20,-2);
+        print "$line\n";
+        print substr($line,20,-1),"\n";
+        $num=0+substr($line,20,-1);
         #print "$num\n";
     }
     if($line =~ /"species":\s".*"/){
         #print substr($line, 20,-2), "\n";
-        $name=substr($line, 20,-2);
+        $name=substr($line, 20,-1);
         $dist{$name}+=$num;
     }
 
