@@ -1,5 +1,5 @@
 #!/usr/bin/perl -w
-use Switch;
+
 # sub print_comment{
 #     @comment=split(/#/,$_[0]);
 #     print "#$comment[1]";
@@ -12,9 +12,7 @@ open(DATA,"<$input_file");
 
 foreach $line (@lines){
 
-    switch($line){
-    case /^\s*echo/   
-    { 
+    if($line =~ /^\s*echo/){
         chomp $line;
         @items=split(/\s/,$line);
 
@@ -28,17 +26,15 @@ foreach $line (@lines){
                 print '\n';
             }
         }
-        print '";',"\n"; 
+        print '";',"\n";
     }
-    case /^\s*(ls|pwd|id|date)/          
-    { 
+    elsif($line =~ /^\s*(ls|pwd|id|date)/){
         chomp $line;
         print 'system "';
         print "$line";
-        print '";',"\n"; 
+        print '";',"\n";
     }
-    case /=/   
-    { 
+    elsif($line =~ /=/){
         chomp $line;
         @items=split(/=/,$line);
         print '$',"$items[0] = ";
@@ -47,66 +43,25 @@ foreach $line (@lines){
         }
         else{
             print "'","$items[1]'\n";
-        } 
+        }    
     }
-    case /#!/    { print "#!/usr/bin/perl -w\n"; }
-    case /^\s*\n/     { print "\n"; }
-    case /cd\s/
-    {
+    elsif($line=~/#!/){
+        #for($i=0;$i<)
+        print "#!/usr/bin/perl -w\n";
+    }
+    elsif($line=~/^\s*\n/){
+        print "\n";
+    }
+    elsif($line =~ /cd\s/){
         chomp $line;
         @items=split(/\s/,$line);
         print "chdir '$items[1]'\n";
     }
-    #else              { print "没有匹配的条件" }
-}
-
-
-    # if($line =~ /^\s*echo/){
-    #     chomp $line;
-    #     @items=split(/\s/,$line);
-
-    #     print 'print "';
-    #     for($i=1;$i<@items;$i++){
-    #         print "$items[$i]";
-    #         if($i!=@items-1){
-    #             print " ";
-    #         }
-    #         else{
-    #             print '\n';
-    #         }
-    #     }
-    #     print '";',"\n";
-    # }
-    # elsif($line =~ /^\s*(ls|pwd|id|date)/){
-    #     chomp $line;
-    #     print 'system "';
-    #     print "$line";
-    #     print '";',"\n";
-    # }
-    # elsif($line =~ /=/){
-    #     chomp $line;
-    #     @items=split(/=/,$line);
-    #     print '$',"$items[0] = ";
-    #     if($items[1]=~/[0-9\$]+/){
-    #         print "$items[1]\n";
-    #     }
-    #     else{
-    #         print "'","$items[1]'\n";
-    #     }    
-    # }
-    # elsif($line=~/#!/){
-    #     #for($i=0;$i<)
-    #     print "#!/usr/bin/perl -w\n";
-    # }
-    # elsif($line=~/^\s*\n/){
-    #     print "\n";
-    # }
-    # elsif($line =~ /cd\s/){
-    #     chomp $line;
-    #     @items=split(/\s/,$line);
-    #     print "chdir '$items[1]'\n";
-    # }
-    #elsif($line=~)
+    elsif($line=~/for/){
+        if($line=~/\sin\s/){
+            
+        }
+    }
 
 
     if($line=~/#\s/){
