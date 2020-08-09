@@ -19,14 +19,14 @@ foreach $line (@lines){
             $line=~s/"/\\"/g;
         }
         elsif($line=~/echo\s"/){
-            $line=~s/"//g;
+            $line=~s/\s*echo\s*"//g;
             $line=~s/'/\\'/g;
         }
-        
+        $line=~s/\s*echo\s*//;
         @items=split(/\s/,$line);
 
         print 'print "';
-        for($i=1;$i<@items;$i++){
+        for($i=0;$i<@items;$i++){
             print "$items[$i]";
             if($i!=@items-1){
                 print " ";
@@ -67,9 +67,31 @@ foreach $line (@lines){
         print "chdir '$items[1]'\n";
     }
     elsif($line=~/for/){
-        if($line=~/\sin\s/){
-
+        chomp $line;
+        @items=split(/\s/,$line);
+        print "foreach \$$items[1] (";
+        if(@items==4){
+            print "glob(\"$items[3]\")){\n\t";
+            
         }
+        elsif(@items>4){
+            for($i=3;$i<@items;$i++){
+                if($items[$i]=~/\d+/){
+                    print "$items[$i]"
+                }
+                else{
+                    print "'$items[$i]'";
+                }
+                
+                if($i!=@items-1){
+                    print ", ";
+                }
+            }
+            print "){\n\t";
+        }
+    }
+    elsif($line=~/done/){
+        print "}\n";
     }
 
 
