@@ -14,6 +14,15 @@ foreach $line (@lines){
 
     if($line =~ /^\s*echo/){
         chomp $line;
+        if($line=~/echo\s'/){
+            $line=~s/'//g;
+            $line=~s/"/\\"/g;
+        }
+        elsif($line=~/echo\s"/){
+            $line=~s/"//g;
+            $line=~s/'/\\'/g;
+        }
+        
         @items=split(/\s/,$line);
 
         print 'print "';
