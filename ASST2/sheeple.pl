@@ -74,7 +74,7 @@ foreach $line (@lines){
         $n=substr($&,1)-1;
         $line=~s/\$\d/\$ARGV[$n]/g;
     }
-    print "$line";
+    #print "$line";
     if($line =~ /^\s*echo/){
         chomp $line;
         if($line=~/echo\s'/){
