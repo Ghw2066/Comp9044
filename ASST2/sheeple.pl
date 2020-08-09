@@ -39,10 +39,10 @@ foreach $line (@lines){
         @items=split(/=/,$line);
         print '$',"$items[0] = ";
         if($items[1]=~/[0-9\$]+/){
-            print "$items[1]\n";
+            print "$items[1];\n";
         }
         else{
-            print "'","$items[1]'\n";
+            print "'","$items[1]';\n";
         }    
     }
     elsif($line=~/#!/){
@@ -59,7 +59,7 @@ foreach $line (@lines){
     }
     elsif($line=~/for/){
         if($line=~/\sin\s/){
-            
+
         }
     }
 
