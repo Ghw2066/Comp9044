@@ -1,67 +1,75 @@
 #!/usr/bin/perl -w
 
-# sub isNumber{
-#     if($_[0]=~/\d+/){
-#         return 1;
-#     }
-#     else{
-#         return 0;
-#     }
-# }
+sub isNumber{
+    if($_[0]=~/\d+/){
+        return 1;
+    }
+    else{
+        return 0;
+    }
+}
 
-# sub condition{
-    
-#     if($_[0]=~/=/){
-#         @vs=split(/\s*=\s*/,$_[0]);
-#         if(isNumber($vs[0]) && isNumber($vs[1])){
-#             print "$vs[0] == $vs[1]"; 
-#         }
-#         else{
-#             print "$vs[0] eq $vs[1]"; 
-#         }
-#     }
-#     elsif($_[0]=~/!=/){
-#         @vs=split(/!=/,$_[0]);
-#         if(isNumber($vs[0]) && isNumber($vs[1])){
-#             print "$vs[0] != $vs[1]"; 
-#         }
-#         else{
-#             print "$vs[0] ne $vs[1]"; 
-#         }
-#     }
-#     elsif($_[0]=~/(-eq|-ne|-lt|-gt|-le|-ge)/){
-#         @vs=split(/$&/,$_[0]);
-#         $cm=substr($&,1);
-#         print "$vs[0] $cm $vs[1]";
-#     }
-# }
+sub condition{
+    %cms = ( "-eq" => "==",
+             "-ne" => "!=",
+             "-lt" => "<",
+             "-gt" => ">",
+             "-le" => "<=",
+             "-ge" => ">=", );
+    if($_[0]=~/(=|==)/){
+        @vs=split(/\s*=\s*/,$_[0]);
+        if(isNumber($vs[0]) && isNumber($vs[1])){
+            print "$vs[0] == $vs[1]"; 
+        }
+        else{
+            print "'$vs[0]' eq '$vs[1]')"; 
+        }
+    }
+    elsif($_[0]=~/!=/){
+        @vs=split(/!=/,$_[0]);
+        if(isNumber($vs[0]) && isNumber($vs[1])){
+            print "$vs[0] != $vs[1]"; 
+        }
+        else{
+            print "$vs[0] ne $vs[1]"; 
+        }
+    }
+    elsif($_[0]=~/(-eq|-ne|-lt|-gt|-le|-ge)/){
+        $cm=$&;
+        @vs=split(/$&/,$_[0]);
+        print "$vs[0]$cms{$cm}$vs[1])";
+    }
+}
 
-# sub test{
-#     @parts=split(/\stest/,$_[0]);
-#     if($parts[1]=~/&&/){
-#         @cdts=split(/\s&&\s/,$parts[1]);
-#         condition($cdts[0]);
-#         print " && ";
-#         condition($cdts[1]);    
-#     }
-#     elsif($parts[1]=~/||/){
-#         @cdts=split(/\s||\s/,$parts[1]);
-#         condition($cdts[0]);
-#         print " || ";
-#         condition($cdts[1]);     
-#     }
-#     elsif($parts[1]=~/-d/){
-#         @cdts=split(/-d\s/,$parts[1]);
-#         print "-d $cdts[1])\n";
-#     }
-#     elsif($parts[1]=~/-r/){
-#         @cdts=split(/-r\s/,$parts[1]);
-#         print "-r $cdts[1])\n";
-#     }
-#     else{
-#         condition($parts[1]);
-#     }
-# }
+sub test{
+    @parts=split(/\stest\s/,$_[0]);
+    #print $parts[1];
+    if($parts[1]=~/&&/){
+        @cdts=split(/\s&&\s/,$parts[1]);
+        condition($cdts[0]);
+        print " && ";
+        condition($cdts[1]);    
+    }
+    elsif($parts[1]=~/\|\|/){
+        @cdts=split(/\s||\s/,$parts[1]);
+        #print @cdts;
+        condition($cdts[0]);
+        print " || ";
+        #print "----$cdts[1]-----";
+        condition($cdts[1]);     
+    }
+    elsif($parts[1]=~/-d/){
+        @cdts=split(/-d\s/,$parts[1]);
+        print "-d '$cdts[1]')";
+    }
+    elsif($parts[1]=~/-r/){
+        @cdts=split(/-r\s/,$parts[1]);
+        print "-r '$cdts[1]')";
+    }
+    else{
+        condition($parts[1]);
+    }
+}
 
 $input_file=$ARGV[0];
 
@@ -70,19 +78,26 @@ open(DATA,"<$input_file");
 
 foreach $line (@lines){
 
-    if($line=~/\$\d/){
+    if($line=~/\$\d/){      
         $n=substr($&,1)-1;
         $line=~s/\$\d/\$ARGV[$n]/g;
     }
-    print "$line";
+    if($line=~/\$\#/){
+        $line=~s/\$\#/\@ARGV/g;
+    }
+    if($line=~/local\s/){
+        $line=~s/local\s/my /g;
+    }
+    $line_copy=$line;
     if($line =~ /^\s*echo/){
         chomp $line;
+        
         if($line=~/echo\s'/){
             $line=~s/'//g;
             $line=~s/"/\\"/g;
         }
         elsif($line=~/echo\s"/){
-            $line=~s/\s*echo\s*"//g;
+            $line=~s/"//g;
             $line=~s/'/\\'/g;
         }
         $line=~s/\s*echo\s*//;
@@ -106,7 +121,7 @@ foreach $line (@lines){
         print "$line";
         print '";',"\n";
     }
-    elsif($line =~ /=/){
+    elsif($line =~ /\w+=(\$|\w)\w+/){
         chomp $line;
         @items=split(/=/,$line);
         print '$',"$items[0] = ";
@@ -154,7 +169,7 @@ foreach $line (@lines){
         }
     }
     elsif($line=~/done/){
-        print "}\n";
+        print "\n}\n";
     }
     elsif($line=~/exit/){
         print "$line";
@@ -163,25 +178,80 @@ foreach $line (@lines){
         print '$line = <STDIN>;',"\n";
         print 'chomp $line;',"\n";
     }
-    elsif($line=~/if/){
-        #chomp $line;
-        #print "$line\n";
-        #print "if( ";
+    elsif($line=~/^\s*if\s/){
+        chomp $line;
+        print "if( ";
         #@items=split(/\s/,$line);
-        # if($line=~/test/){
-        #     test($line);    
-        # }
-
+        if($line=~/test/){
+            #print "$line\n";
+            test($line);    
+        }
+        elsif($line=~/\s\[\s/){
+            $line=~s/\[/test/;
+            $line=~s/\s*\]//;
+            test($line);
+        }
         print " {\n";
     }
-    elsif($line=~/fi/){
+    elsif($line=~/^\s*fi/){
         print "}\n";
+    }
+    elsif($line=~/else/){
+        print "} else {\n";
+    }
+    elsif($line=~/elif\s/){
+        chomp $line;
+        print "} elsif( ";
+        #@items=split(/\s/,$line);
+        if($line=~/test/){
+            #print "$line\n";
+            test($line);    
+        }
+        elsif($line=~/\s\[\s/){
+            $line=~s/\[/test/;
+            $line=~s/\s*\]//;
+            test($line);
+        }
+        print " {\n";
+    }
+    elsif($line=~/^\s*while\s/){
+        chomp $line;
+        print "while (";
+        if($line=~/\stest\s/){
+            test($line);
+        }
+        elsif($line=~/\s\[\s/){
+            $line=~s/\[/test/;
+            $line=~s/\s*\]//;
+            test($line);
+        }
+        print " {\n";
+    }
+    elsif($line=~/expr\s/){
+        chomp $line;
+        $line=~s/`/ /g;
+        $line=~s/expr\s*//g;
+        $line=~s/\s*#[\s\w]+//g;
+        @parts=split(/=/,$line);
+        $parts[0]=~s/\s*//;
+        print "\$$parts[0] = $parts[1];";
+        #print "$line";
+    }
+    elsif($line=~/\$\(\(/){
+        chomp $line;
+        $line=~s/\$\(\(/ /g;
+        $line=~s/\)\).*//g;
+        @parts=split(/=/,$line);
+        $parts[0]=~s/\s*//;
+        $parts[1]=~s/\s*//;
+        print "\$$parts[0] = \$$parts[1];";
     }
     
 
 
-    if($line=~/#\s/){
-        @comment=split(/#/,$line);
+    if($line_copy=~/#\s/){
+        
+        @comment=split(/#/,$line_copy);
         print "#$comment[1]";
     }
 
